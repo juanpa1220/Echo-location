@@ -6,7 +6,7 @@ class Particle:
         self.rays = []
 
     def display(self, screen, pos):
-        pygame.draw.circle(screen, (255, 255, 255), pos, 5, 5)  # sonar
+        pygame.draw.circle(screen, (255, 255, 255), pos, 10, 10)  # sonar
         # for ray in self.rays:
         #     ray.display(screen)
 

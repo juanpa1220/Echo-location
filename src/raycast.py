@@ -4,6 +4,7 @@
 from pygame.locals import *
 from src.Limits import *
 from src.particle import *
+import random
 
 WIDTH = 800  # ancho
 HEIGHT = 800  # alto
@@ -22,6 +23,11 @@ class Display:
         self.walls.append(Limits(49, 184, 541, 282))
         self.walls.append(Limits(162, 60, 389, 593))
         self.walls.append(Limits(45, 30, 112, 662))
+        # ------------------- Aqui van las paredes que rodean la pantalla -----------------------------------
+        # self.walls.append((Limits(0, 0, 800, 0)))
+        # self.walls.append((Limits(0, 0, 0, 800)))
+        # self.walls.append((Limits(800, 0, 800, 800)))
+        # self.walls.append((Limits(0, 800, 800, 800)))
 
         self.particle = Particle()
         self.stop_game = False
@@ -35,6 +41,9 @@ class Display:
 
     def run(self):
         angle = 180
+        numberOfRays = 10
+        contador = 0
+        posibleAngle = []
         while not self.stop_game:
             self.screen.fill((0, 0, 0))
             for event in pygame.event.get():
@@ -45,22 +54,36 @@ class Display:
                     tem_pos = event.pos
                     if len(
                             self.walls) == 5:  # Aqui se crean las paredes que iran dentro del sonar para detectar colision
-                        self.walls.append(Limits(tem_pos[0], tem_pos[1], tem_pos[0], tem_pos[1] + 15))  # frente
                         self.walls.append(
-                            Limits(tem_pos[0], tem_pos[1] + 15, tem_pos[0] + 15, tem_pos[1] + 15))  # abajo
-                        self.walls.append(Limits(tem_pos[0], tem_pos[1], tem_pos[0] + 15, tem_pos[1]))  # arriba
+                            Limits(tem_pos[0] - 7.5, tem_pos[1] - 7.5, tem_pos[0] - 7.5, tem_pos[1] + 7.5))  # frente
                         self.walls.append(
-                            Limits(tem_pos[0] + 15, tem_pos[1], tem_pos[0] + 15, tem_pos[1] + 15))  # atras
+                            Limits(tem_pos[0] - 7.5, tem_pos[1] + 7.5, tem_pos[0] + 7.5, tem_pos[1] + 7.5))  # abajo
+                        self.walls.append(
+                            Limits(tem_pos[0] - 7.5, tem_pos[1] - 7.5, tem_pos[0] + 7.5, tem_pos[1] - 7.5))  # arriba
+                        self.walls.append(
+                            Limits(tem_pos[0] + 7.5, tem_pos[1] - 7.5, tem_pos[0] + 7.5, tem_pos[1] + 7.5))  # atras
                     elif len(self.walls) > 5:
-                        self.walls[5] = Limits(tem_pos[0], tem_pos[1], tem_pos[0], tem_pos[1] + 15)
-                        self.walls[6] = Limits(tem_pos[0], tem_pos[1] + 15, tem_pos[0] + 15, tem_pos[1] + 15)
-                        self.walls[7] = Limits(tem_pos[0], tem_pos[1], tem_pos[0] + 15, tem_pos[1])
-                        self.walls[8] = Limits(tem_pos[0] + 15, tem_pos[1], tem_pos[0] + 15, tem_pos[1] + 15)
+                        self.walls[5] = Limits(tem_pos[0] - 7.5, tem_pos[1] - 7.5, tem_pos[0] - 7.5, tem_pos[1] + 7.5)
+                        self.walls[6] = Limits(tem_pos[0] - 7.5, tem_pos[1] + 7.5, tem_pos[0] + 7.5, tem_pos[1] + 7.5)
+                        self.walls[7] = Limits(tem_pos[0] - 7.5, tem_pos[1] - 7.5, tem_pos[0] + 7.5, tem_pos[1] - 7.5)
+                        self.walls[8] = Limits(tem_pos[0] + 7.5, tem_pos[1] - 7.5, tem_pos[0] + 7.5, tem_pos[1] + 7.5)
                     self.pos = array([tem_pos[0], tem_pos[1]])
 
-            self.particle.look(self.screen, self.walls, 0, self.pos, self.pos, angle)
-            # Choose angle of sonar with key
+            #self.particle.look(self.screen, self.walls, 0, self.pos, self.pos, angle)
 
+            # -------------------------------------Posible solucion 1 -----------------------------------------------
+            # for i in range(numberOfRays):
+            #     posibleAngle.append(random.randint(-20, 20))
+            #
+            # for i in range(numberOfRays):
+            #     self.particle.look(self.screen, self.walls, 0, self.pos, self.pos, angle + posibleAngle[i])
+
+            # -------------------------------------Posible solucion 2 -----------------------------------------------
+
+            if contador <= numberOfRays:
+                self.particle.look(self.screen, self.walls, 0, self.pos, self.pos, angle + random.randint(-20, 20))
+
+            # Choose angle of sonar with key
             teclado = pygame.key.get_pressed()
             if teclado[K_RIGHT]:
                 angle += 0.5
@@ -68,7 +91,7 @@ class Display:
                 angle -= 0.5
 
             self.draw()
-            self.clock.tick(100)
+            self.clock.tick(10)
             pygame.display.update()
 
 
