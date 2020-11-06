@@ -6,6 +6,7 @@ from numpy import cos, sin, arccos, arctan
 from numpy import degrees
 from numpy import dot
 from numpy import deg2rad
+from numpy import absolute
 
 
 class Ray:
@@ -65,12 +66,15 @@ class Ray:
 
                 # calcula los casos especiales de la orientacion
                 tem_angle = get_norm_angle(self.radius)
-                tem_wall_angle = degrees(arctan((wall_y2 - wall_y1) / (wall_x2 - wall_x1)))
-                if c[0] < b[0] or (
-                        wall_x1 < wall_x2 and get_quadrant(tem_angle) == 3 and 180 + tem_wall_angle < tem_angle
-                ) or (
+                tem_wall_angle = absolute(degrees(arctan((wall_y2 - wall_y1) / (wall_x2 - wall_x1))))
+                if c[0] < b[0]:
+                    self.orientation = True
+                if (wall_x1 < wall_x2 and get_quadrant(tem_angle) == 3 and 180 + tem_wall_angle < tem_angle) or (
                         wall_x1 > wall_x2 and get_quadrant(tem_angle) == 2 and 180 - tem_wall_angle > tem_angle):
                     self.orientation = True
+                if (wall_x1 < wall_x2 and get_quadrant(tem_angle) == 1 and tem_wall_angle < tem_angle) or (
+                        wall_x1 > wall_x2 and get_quadrant(tem_angle) == 4 and 360 - tem_wall_angle > tem_angle):
+                    self.orientation = False
 
                 ba = a - b
                 bc = c - b
