@@ -78,16 +78,16 @@ class Display:
             if teclado[K_LEFT]:
                 angle -= 1.12
 
-            #self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos, angle, 1000)
+            # self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos, angle, 1000)
             for i in range(number_of_rays):
                 tem_angle = angle + random.randint(-20, 20)
                 self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos,
-                                   tem_angle, 255)
+                                   tem_angle, tem_angle, 255)
                 for j in range(number_second_rays):
                     random_angle = random.randint(-10, 10)
                     tem_angle_2 = tem_angle + random_angle
                     self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos,
-                                       tem_angle_2, 255 - absolute(random_angle * 3))
+                                       tem_angle_2, tem_angle_2, 255 - absolute(random_angle * 3))
 
             self.draw()
             self.clock.tick(10)

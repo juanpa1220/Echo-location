@@ -13,7 +13,7 @@ class Particle:
         self.rays = []
 
     def look(self, screen, walls, sonar_walls, iteration, sonar_position, origin_pos, incidence_angle,
-             reflection_angle):
+             reflection_angle, intensity):
         self.rays = []
         is_not_sonar = True
         self.rays.append(Ray(sonar_position[0], sonar_position[1], reflection_angle))
@@ -78,7 +78,7 @@ class Particle:
 
             if is_not_sonar and closest_point is not None and iteration < 2:
                 self.look(screen, walls, sonar_walls, iteration + 1, array(closest_point, int), origin_pos,
-                          incidence_angle, reflection_angle)
+                          incidence_angle, reflection_angle, intensity)
 
             if not is_not_sonar:
                 pygame.draw.circle(screen, (255, 255, 255), (int(closest_point[0]), int(closest_point[1])), 15, 15)
