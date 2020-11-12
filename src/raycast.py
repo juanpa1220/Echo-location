@@ -74,9 +74,9 @@ class Display:
             # Choose angle of sonar with key
             teclado = pygame.key.get_pressed()
             if teclado[K_RIGHT]:
-                angle += 1
+                angle += 1.12
             if teclado[K_LEFT]:
-                angle -= 1
+                angle -= 1.12
 
             #self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos, angle, 1000)
             for i in range(number_of_rays):
