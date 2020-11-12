@@ -4,6 +4,7 @@
 from pygame.locals import *
 from src.Limits import *
 from src.particle import *
+from numpy import absolute
 import random
 
 WIDTH = 800  # ancho
@@ -50,7 +51,8 @@ class Display:
 
     def run(self):
         angle = 180
-        number_of_rays = 10
+        number_of_rays = 1
+        number_second_rays = 1
 
         while not self.stop_game:
             self.screen.fill((0, 0, 0))
@@ -76,10 +78,16 @@ class Display:
             if teclado[K_LEFT]:
                 angle -= 1
 
-            self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos, angle)
-            # for i in range(number_of_rays):
-            #     self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos,
-            #                        angle + random.randint(-20, 20))
+            #self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos, angle, 1000)
+            for i in range(number_of_rays):
+                tem_angle = angle + random.randint(-20, 20)
+                self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos,
+                                   tem_angle, 255)
+                for j in range(number_second_rays):
+                    random_angle = random.randint(-10, 10)
+                    tem_angle_2 = tem_angle + random_angle
+                    self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos,
+                                       tem_angle_2, 255 - absolute(random_angle * 3))
 
             self.draw()
             self.clock.tick(10)

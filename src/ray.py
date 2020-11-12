@@ -52,7 +52,6 @@ class Ray:
             # Px, Py
             intersection_x = wall_x1 + t * (wall_x2 - wall_x1)
             intersection_y = wall_y1 + t * (wall_y2 - wall_y1)
-
             intersection_point = array([intersection_x, intersection_y])
 
             if is_not_sonar:
