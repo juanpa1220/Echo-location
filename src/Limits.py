@@ -7,4 +7,4 @@ class Limits:
         self.b = [x2, y2]
 
     def display(self, screen):
-        pygame.draw.line(screen, (105, 75, 255), self.a, self.b, 2)
+        pygame.draw.line(screen, (105, 75, 255), self.a, self.b, 1)
