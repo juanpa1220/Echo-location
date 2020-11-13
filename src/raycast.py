@@ -57,7 +57,7 @@ class Display:
     def run(self):
         angle = 180
         number_of_rays = 10
-        number_second_rays = 10
+        number_second_rays = 3
 
         while not self.stop_game:
             self.screen.fill((0, 0, 0))
@@ -77,32 +77,33 @@ class Display:
                     self.sonar_walls[3] = Limits(tem_pos[0] + 10, tem_pos[1] - 10, tem_pos[0] + 10, tem_pos[1] + 10)
 
             # Choose angle of sonar with key
-            teclado = pygame.key.get_pressed()
-            if teclado[K_RIGHT]:
+            key_pressed = pygame.key.get_pressed()
+            if key_pressed[K_RIGHT]:
                 angle += 1.12
-            if teclado[K_LEFT]:
+            if key_pressed[K_LEFT]:
                 angle -= 1.12
 
             # Get a numpy array to display from the simulation
             pixels = np.roll(self.px, (1, 2), (0, 1))
-            npimage = pixels
+            np_image = pixels
 
             # Convert to a surface and splat onto screen offset by border width and height
-            surface = pygame.surfarray.make_surface(npimage)
+            surface = pygame.surfarray.make_surface(np_image)
             self.screen.blit(surface, (0, 0))
 
-
-            #self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos, angle, angle,
+            # self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos, angle, angle,
             #                              255, self.px)
             for i in range(number_of_rays):
-                tem_angle = angle + random.randint(-20, 20)
-                self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos,
-                                   tem_angle, tem_angle, 255, self.px)
+                tem_angle = angle + random.randint(-10, 10)
+                origin_pos, x_multiplier, y_multiplier = self.particle.look(self.screen, self.walls, self.sonar_walls,
+                                                                            0, self.pos, self.pos, tem_angle, tem_angle,
+                                                                            255, self.px, True, 1, 1)
                 for j in range(number_second_rays):
-                    random_angle = random.randint(-10, 10)
+                    random_angle = random.randint(-5, 5)
                     tem_angle_2 = tem_angle + random_angle
-                    self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos,
-                                       tem_angle_2, tem_angle_2, 255 - absolute(random_angle * 3), self.px)
+                    self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, origin_pos,
+                                       tem_angle_2, tem_angle_2, 255 - absolute(random_angle * 3), self.px, False,
+                                       x_multiplier, y_multiplier)
 
             self.draw()
             self.clock.tick(10)
