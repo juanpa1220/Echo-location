@@ -16,6 +16,8 @@ class Ray:
         self.ray_direction = array([cos(deg2rad(radius)), sin(deg2rad(radius))])
         self.orientation = None
         self.incidence_angle = None
+        self.x_multiplier = 1
+        self.y_multiplier = 1
 
     def display(self, screen):
         pygame.draw.line(screen, (255, 255, 255), self.ray_origin_position,
@@ -75,6 +77,21 @@ class Ray:
                         wall_x1 > wall_x2 and get_quadrant(tem_angle) == 4 and 360 - tem_wall_angle > tem_angle):
                     self.orientation = False
 
+                if wall_x1 < wall_x2:
+                    if self.orientation:  # right
+                        self.x_multiplier = -1
+                        self.y_multiplier = 1
+                    else:
+                        self.x_multiplier = 1
+                        self.y_multiplier = -1
+                if wall_x1 > wall_x2:
+                    if self.orientation:
+                        self.x_multiplier = -1
+                        self.y_multiplier = -1
+                    else:
+                        self.x_multiplier = 1
+                        self.y_multiplier = 1
+
                 ba = a - b
                 bc = c - b
                 cosine_angle = dot(ba, bc) / (linalg.norm(ba) * linalg.norm(bc))
@@ -89,6 +106,9 @@ class Ray:
 
     def get_orientation(self):
         return self.orientation
+
+    def get_multipliers(self):
+        return self.x_multiplier, self.y_multiplier
 
 
 def get_norm_angle(angle):

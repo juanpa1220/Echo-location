@@ -24,11 +24,43 @@ class Display:
         # walls
         self.walls = []
         self.sonar_walls = []
-        self.walls.append(Limits(146, 518, 455, 750))
-        self.walls.append(Limits(336, 161, 56, 587))
-        self.walls.append(Limits(49, 184, 541, 282))
-        self.walls.append(Limits(162, 60, 389, 593))
-        self.walls.append(Limits(45, 30, 112, 662))
+
+        # self.walls.append(Limits(146, 518, 455, 750))
+        # self.walls.append(Limits(336, 161, 56, 587))
+        # self.walls.append(Limits(49, 184, 541, 282))
+        # self.walls.append(Limits(162, 60, 389, 593))
+        # self.walls.append(Limits(45, 30, 112, 662))
+
+        # esquinas
+        self.walls.append(Limits(110, 0, 0, 100))
+        self.walls.append(Limits(0, 700, 100, 810))
+        self.walls.append(Limits(800, 700, 690, 800))
+        self.walls.append(Limits(690, 0, 800, 100))
+
+        self.walls.append(Limits(120, 80, 180, 200))
+        self.walls.append(Limits(180, 200, 300, 320))
+        self.walls.append(Limits(300, 320, 200, 400))
+
+        self.walls.append(Limits(100, 200, 0, 500))
+
+        # equis
+        self.walls.append(Limits(80, 500, 300, 700))
+        self.walls.append(Limits(300, 500, 80, 700))
+
+        # rombo de arriba
+        self.walls.append(Limits(355, 50, 300, 100))
+        self.walls.append(Limits(355, 50, 400, 100))
+        self.walls.append(Limits(300, 100, 345, 150))
+        self.walls.append(Limits(400, 100, 345, 150))
+
+        # rombo de abajo
+        self.walls.append(Limits(455, 400, 400, 450))
+        self.walls.append(Limits(455, 400, 500, 450))
+        self.walls.append(Limits(400, 450, 445, 500))
+        self.walls.append(Limits(500, 450, 445, 500))
+
+        self.walls.append(Limits(640, 780, 350, 790))
+
         self.sonar_walls.append(
             Limits(init_sonar_x - 10, init_sonar_y - 10, init_sonar_x - 10, init_sonar_y + 10))  # frente
         self.sonar_walls.append(
@@ -43,21 +75,20 @@ class Display:
         self.clock = pygame.time.Clock()
         self.pos = array([init_sonar_x, init_sonar_y])
 
-        self.i = Image.new("RGB", (800, 800), (0, 0, 0))
+        self.i = Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))
         self.px = np.array(self.i)
 
     def draw(self):
-        # for wall in self.walls:
-        #     wall.display(self.screen)
-        # # display(self.screen, self.pos)
-        # for wall in self.sonar_walls:
-        #     wall.display(self.screen)
+        for wall in self.walls:
+            wall.display(self.screen)
+        for wall in self.sonar_walls:
+            wall.display(self.screen)
         pygame.draw.circle(self.screen, (255, 255, 255), (self.pos[0], self.pos[1]), 12, 12)
 
     def run(self):
-        angle = 180
+        angle = 170
         number_of_rays = 10
-        number_second_rays = 3
+        number_second_rays = 2
 
         while not self.stop_game:
             self.screen.fill((0, 0, 0))
@@ -92,18 +123,18 @@ class Display:
             self.screen.blit(surface, (0, 0))
 
             # self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, self.pos, angle, angle,
-            #                              255, self.px)
+            #                    255, self.px, True, 1, 1, 0, 0)
             for i in range(number_of_rays):
-                tem_angle = angle + random.randint(-10, 10)
+                tem_angle = angle + random.uniform(-10, 10)
                 origin_pos, x_multiplier, y_multiplier = self.particle.look(self.screen, self.walls, self.sonar_walls,
                                                                             0, self.pos, self.pos, tem_angle, tem_angle,
-                                                                            255, self.px, True, 1, 1)
+                                                                            255, self.px, True, 0, 0, 0, 0)
                 for j in range(number_second_rays):
-                    random_angle = random.randint(-5, 5)
+                    random_angle = random.uniform(-5, 5)
                     tem_angle_2 = tem_angle + random_angle
                     self.particle.look(self.screen, self.walls, self.sonar_walls, 0, self.pos, origin_pos,
                                        tem_angle_2, tem_angle_2, 255 - absolute(random_angle * 3), self.px, False,
-                                       x_multiplier, y_multiplier)
+                                       x_multiplier, y_multiplier, 0, 0)
 
             self.draw()
             self.clock.tick(10)
