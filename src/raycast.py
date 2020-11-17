@@ -79,15 +79,15 @@ class Display:
         self.px = np.array(self.i)
 
     def draw(self):
-        for wall in self.walls:
-            wall.display(self.screen)
-        for wall in self.sonar_walls:
-            wall.display(self.screen)
+        # for wall in self.walls:
+        #     wall.display(self.screen)
+        # for wall in self.sonar_walls:
+        #     wall.display(self.screen)
         pygame.draw.circle(self.screen, (255, 255, 255), (self.pos[0], self.pos[1]), 12, 12)
 
     def run(self):
         angle = 170
-        number_of_rays = 10
+        number_of_rays = 20
         number_second_rays = 2
 
         while not self.stop_game:

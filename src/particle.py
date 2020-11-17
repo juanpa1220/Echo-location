@@ -101,7 +101,7 @@ class Particle:
 
                 if (iteration < 2 and not is_primary and origin_pos is not None) or (is_primary and 0 < iteration <= 2):
                     angle_energy = absolute(angle_energy - tem_angle_energy)
-                    intensity -= (1 / angle_energy) * 500  # resta respecto al angulo de incidencia
+                    intensity -= (1 / angle_energy) * 500 - 5.56  # resta respecto al angulo de incidencia
                     tem_distance = linalg.norm(origin_pos - closest_point)
                     tem_distance = int(tem_distance)
                     pixel_color = px[array(origin_pos, int)[0] - 10][array(origin_pos - 10, int)[1]]
