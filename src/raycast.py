@@ -88,7 +88,7 @@ class Display:
     def run(self):
         angle = 170
         number_of_rays = 20
-        number_second_rays = 2
+        number_second_rays = 10
 
         while not self.stop_game:
             self.screen.fill((0, 0, 0))
